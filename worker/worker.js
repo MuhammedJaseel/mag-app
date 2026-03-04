@@ -1,6 +1,8 @@
 // import { Worker } from "bullmq";
 const { Worker } = require("bullmq");
 const { Client } = require("pg");
+const dotenv = require("dotenv");
+dotenv.config({ path: "../.env" });
 
 const client = new Client({
   host: "localhost",

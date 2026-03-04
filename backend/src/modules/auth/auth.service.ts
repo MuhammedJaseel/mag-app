@@ -40,7 +40,7 @@ export class AuthService {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
-      const secret = 'MY_SUPER_SECRET';
+      const secret = process.env.JWT_SECRET;
 
       const payload = {
         userId: user.id,

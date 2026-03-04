@@ -16,7 +16,8 @@ export class JwtAuthGuard implements CanActivate {
     if (type !== 'Bearer' || !token) return false;
 
     try {
-      const payload = this.jwtService.verify(token, { secret: 'MY_SUPER_SECRET' });
+      const secret = process.env.JWT_SECRET;
+      const payload = this.jwtService.verify(token, { secret });
       // attach user info to request
       (request as any).user = payload;
       return true;
