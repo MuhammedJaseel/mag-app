@@ -5,11 +5,11 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "../.env" });
 
 const client = new Client({
-  host: "localhost",
-  port: 5432,
-  user: "postgres",
-  password: "4040",
-  database: "mag_db",
+  host: process.env.DB_HOST || "localhost",
+  port: +process.env.DB_PORT || 5432,
+  username: process.env.DB_USER || "postgres",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "",
 });
 
 async function connectDB() {
@@ -24,8 +24,8 @@ async function connectDB() {
 connectDB();
 
 const connectionOptions = {
-  host: "127.0.0.1",
-  port: 6379,
+  host: process.env.REDIS_HOST || "redis",
+  port: +process.env.REDIS_PORT || 6379,
   // password: '',
 };
 

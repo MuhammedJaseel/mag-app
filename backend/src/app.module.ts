@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IngestionModule } from './modules/ingestion/ingestion.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
@@ -12,10 +11,7 @@ import { AppService } from './app.service';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      // imports: [ConfigModule],
-      // inject: [ConfigService],
       useFactory: () => ({
         type: 'postgres',
         host: process.env.DB_HOST || 'localhost',
