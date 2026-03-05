@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngestionModule } from './modules/ingestion/ingestion.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { CampaignsModule } from './modules/campaigns/campaigns.module';
 import { CommonModule } from './modules/common/common.module';
 import { QueueModule } from './modules/queue/queue.module';
 import { AppController } from './app.controller';
 
 import { AppService } from './app.service';
+import { TenantsModule } from './modules/tenants/tenants.module';
 
 @Module({
   imports: [
@@ -28,7 +28,7 @@ import { AppService } from './app.service';
     }),
     IngestionModule,
     AuthModule,
-    CampaignsModule,
+    TenantsModule,
     CommonModule,
     QueueModule,
   ],
