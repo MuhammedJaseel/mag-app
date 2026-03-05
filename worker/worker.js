@@ -1,27 +1,15 @@
-// import { Worker } from "bullmq";
 const { Worker } = require("bullmq");
-const { Client } = require("pg");
+const { Pool } = require("pg");
 const dotenv = require("dotenv");
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: "./.env" });
 
-const client = new Client({
-  host: process.env.DB_HOST || "localhost",
-  port: +process.env.DB_PORT || 5432,
-  username: process.env.DB_USER || "postgres",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "",
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
-
-async function connectDB() {
-  try {
-    await client.connect();
-    console.log("Connected to PostgreSQL!");
-  } catch (err) {
-    console.error("Error:", err.stack);
-  }
-}
-
-connectDB();
 
 const connectionOptions = {
   host: process.env.REDIS_HOST || "redis",
@@ -34,13 +22,13 @@ const worker = new Worker(
   async (job) => {
     const text = "SELECT * FROM tenants WHERE unique_name = $1";
     const values = [job.data.tenantId];
-    const res = await client.query(text, values);
+    const res = await pool.query(text, values);
     const tenent = res.rows[0];
     if (!tenent) return;
 
     const text1 = "SELECT * FROM campaigns WHERE slug = $1";
     const values1 = [job.data.campain];
-    const res1 = await client.query(text1, values1);
+    const res1 = await pool.query(text1, values1);
     const campaign = res1.rows[0];
     if (!campaign) return;
 
@@ -55,7 +43,7 @@ const worker = new Worker(
       job.data.user_agent,
       job.data.event_type,
     ];
-    const res2 = await client.query(text2, values2);
+    const res2 = await pool.query(text2, values2);
 
     if (res2.rowCount === 0) {
       const text3 = `INSERT INTO events(tenant_id, campaign_id, ip_address, user_agent, event_type, count)
@@ -69,7 +57,7 @@ const worker = new Worker(
         job.data.event_type,
         1,
       ];
-      const res3 = await client.query(text3, values3);
+      const res3 = await pool.query(text3, values3);
       console.log("Inserted row:", res3.rows[0]);
     } else console.log("Updated row:");
     return true;

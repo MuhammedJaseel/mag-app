@@ -13,7 +13,7 @@ export class IngestService {
     private readonly eventRepository: Repository<Event>,
   ) {}
 
-  async getCampaign(
+  async getEvent(
     tenant_id: string,
     campaign_id: string,
     event_type: 'opened' | 'clicked_more' | 'liked',
@@ -25,7 +25,7 @@ export class IngestService {
     if (!campaign)
       throw new HttpException('Campaign not found', HttpStatus.NOT_FOUND);
 
-    const events = await this.eventRepository.findOne({
+    const events = await this.eventRepository.find({
       where: { campaign_id, tenant_id, event_type },
     });
 

@@ -18,12 +18,12 @@ export class IngestController {
     enum: ['opened', 'clicked_more', 'liked'],
   })
   @Roles('tenant-admin', 'tenant-user')
-  getUser(
+  getEvent(
     @Req() req: Request,
     @Param('campaign_id') campaign_id: string,
     @Query('type') type: 'opened' | 'clicked_more' | 'liked',
   ) {
     const tenantId = req['user'].tenantId;
-    return this.ingestService.getCampaign(tenantId, campaign_id, type);
+    return this.ingestService.getEvent(tenantId, campaign_id, type);
   }
 }

@@ -9,6 +9,7 @@ import { TenantsController } from './tenants.controller';
 import { IngestService } from './ingest/ingest.service';
 import { IngestController } from './ingest/ingest.controller';
 import { Tenant } from 'src/database/entities/tenant.entity';
+import { Event } from 'src/database/entities/event.entity';
 
 @Module({
   imports: [
